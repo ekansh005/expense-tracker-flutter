@@ -61,6 +61,42 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Shoes',
       amount: 11.77,
       date: DateTime.now().subtract(Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Books',
+      amount: 14.44,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Shoes',
+      amount: 11.77,
+      date: DateTime.now().subtract(Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't5',
+      title: 'Books',
+      amount: 14.44,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'Shoes',
+      amount: 11.77,
+      date: DateTime.now().subtract(Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't7',
+      title: 'Books',
+      amount: 14.44,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't8',
+      title: 'Shoes',
+      amount: 11.77,
+      date: DateTime.now().subtract(Duration(days: 1)),
     )
   ];
 
@@ -102,21 +138,38 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  bool showChart = false;
+
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    var appBar = AppBar(
+      title: Text(widget.title),
+      actions: <Widget>[
+        if (isLandscape)
+          Switch(
+            value: showChart,
+            onChanged: (val) {
+              setState(() {
+                showChart = val;
+              });
+            },
+          ),
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () => openAddNewTxModal(context),
+        )
+      ],
+    );
+    var bodyHeight = (MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () => openAddNewTxModal(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => openAddNewTxModal(context),
@@ -126,8 +179,27 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_getRecentTransactions),
-            TransactionList(_userTransactions, _deleteTransaction),
+            if (!isLandscape)
+              Container(
+                height: bodyHeight * 0.3,
+                child: Chart(_getRecentTransactions),
+              ),
+            if (!isLandscape)
+              Container(
+                height: bodyHeight * 0.7,
+                child: TransactionList(_userTransactions, _deleteTransaction),
+              ),
+            if (isLandscape)
+              showChart
+                  ? Container(
+                      height: bodyHeight * 1,
+                      child: Chart(_getRecentTransactions),
+                    )
+                  : Container(
+                      height: bodyHeight * 1,
+                      child: TransactionList(
+                          _userTransactions, _deleteTransaction),
+                    ),
           ],
         ),
       ),

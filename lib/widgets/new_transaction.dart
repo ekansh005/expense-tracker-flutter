@@ -52,55 +52,52 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        margin: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: 'Title'),
-              controller: _titleController,
-              textInputAction: TextInputAction.next,
-              onSubmitted: (_) => FocusScope.of(context).nextFocus(),
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submitData(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    _selectedDate == null
-                        ? 'No Date Selected!'
-                        : 'Transaction Date: ${DateFormat.yMd().format(_selectedDate)}',
+    return Container(
+      margin: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          TextField(
+            decoration: InputDecoration(labelText: 'Title'),
+            controller: _titleController,
+            textInputAction: TextInputAction.next,
+            onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+          ),
+          TextField(
+            decoration: InputDecoration(labelText: 'Amount'),
+            controller: _amountController,
+            keyboardType: TextInputType.number,
+            onSubmitted: (_) => _submitData(),
+          ),
+          Container(
+            height: 70,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  _selectedDate == null
+                      ? 'No Date Selected!'
+                      : 'Transaction Date: ${DateFormat.yMd().format(_selectedDate)}',
+                ),
+                FlatButton(
+                  onPressed: _displayDatePicker,
+                  child: Text(
+                    'Choose Date',
+                    style: Theme.of(context).textTheme.title,
                   ),
-                  FlatButton(
-                    onPressed: _displayDatePicker,
-                    child: Text(
-                      'Choose Date',
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
-            RaisedButton(
-              onPressed: _submitData,
-              color: Theme.of(context).primaryColor,
-              child: Text(
-                'Add Transaction',
-                style: Theme.of(context).textTheme.button,
-              ),
+          ),
+          RaisedButton(
+            onPressed: _submitData,
+            color: Theme.of(context).primaryColor,
+            child: Text(
+              'Add Transaction',
+              style: Theme.of(context).textTheme.button,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
