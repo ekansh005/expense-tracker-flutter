@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:expense_tracker/widgets/chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './widgets/new_transaction.dart';
@@ -50,54 +53,54 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'Books',
-    //   amount: 14.44,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Shoes',
-    //   amount: 11.77,
-    //   date: DateTime.now().subtract(Duration(days: 1)),
-    // ),
-    // Transaction(
-    //   id: 't3',
-    //   title: 'Books',
-    //   amount: 14.44,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't4',
-    //   title: 'Shoes',
-    //   amount: 11.77,
-    //   date: DateTime.now().subtract(Duration(days: 1)),
-    // ),
-    // Transaction(
-    //   id: 't5',
-    //   title: 'Books',
-    //   amount: 14.44,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't6',
-    //   title: 'Shoes',
-    //   amount: 11.77,
-    //   date: DateTime.now().subtract(Duration(days: 1)),
-    // ),
-    // Transaction(
-    //   id: 't7',
-    //   title: 'Books',
-    //   amount: 14.44,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't8',
-    //   title: 'Shoes',
-    //   amount: 11.77,
-    //   date: DateTime.now().subtract(Duration(days: 1)),
-    // )
+    Transaction(
+      id: 't1',
+      title: 'Books',
+      amount: 14.44,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Shoes',
+      amount: 11.77,
+      date: DateTime.now().subtract(Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Books',
+      amount: 14.44,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Shoes',
+      amount: 11.77,
+      date: DateTime.now().subtract(Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't5',
+      title: 'Books',
+      amount: 14.44,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'Shoes',
+      amount: 11.77,
+      date: DateTime.now().subtract(Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't7',
+      title: 'Books',
+      amount: 14.44,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't8',
+      title: 'Shoes',
+      amount: 11.77,
+      date: DateTime.now().subtract(Duration(days: 1)),
+    )
   ];
 
   List<Transaction> get _getRecentTransactions {
@@ -142,67 +145,89 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
-    var appBar = AppBar(
-      title: Text(widget.title),
-      actions: <Widget>[
-        if (isLandscape)
-          Switch(
-            value: showChart,
-            onChanged: (val) {
-              setState(() {
-                showChart = val;
-              });
-            },
-          ),
-        IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          onPressed: () => openAddNewTxModal(context),
-        )
-      ],
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final showCardSwitch = Switch.adaptive(
+      value: showChart,
+      onChanged: (val) {
+        setState(() {
+          showChart = val;
+        });
+      },
     );
-    var bodyHeight = (MediaQuery.of(context).size.height -
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text(widget.title),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                showCardSwitch,
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add),
+                  onTap: () => openAddNewTxModal(context),
+                )
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text(widget.title),
+            actions: <Widget>[
+              if (isLandscape) showCardSwitch,
+              IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+                onPressed: () => openAddNewTxModal(context),
+              )
+            ],
+          );
+    var bodyHeight = (mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top);
-    return Scaffold(
-      appBar: appBar,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => openAddNewTxModal(context),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (!isLandscape)
-              Container(
-                height: bodyHeight * 0.3,
-                child: Chart(_getRecentTransactions),
-              ),
-            if (!isLandscape)
-              Container(
-                height: bodyHeight * 0.7,
-                child: TransactionList(_userTransactions, _deleteTransaction),
-              ),
-            if (isLandscape)
-              showChart
-                  ? Container(
-                      height: bodyHeight * 1,
-                      child: Chart(_getRecentTransactions),
-                    )
-                  : Container(
-                      height: bodyHeight * 1,
-                      child: TransactionList(
-                          _userTransactions, _deleteTransaction),
-                    ),
-          ],
-        ),
+        mediaQuery.padding.top);
+    var pageBody = SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          if (!isLandscape)
+            Container(
+              height: bodyHeight * 0.3,
+              child: Chart(_getRecentTransactions),
+            ),
+          if (!isLandscape)
+            Container(
+              height: bodyHeight * 0.7,
+              child: TransactionList(_userTransactions, _deleteTransaction),
+            ),
+          if (isLandscape)
+            showChart
+                ? Container(
+                    height: bodyHeight * 1,
+                    child: Chart(_getRecentTransactions),
+                  )
+                : Container(
+                    height: bodyHeight * 1,
+                    child:
+                        TransactionList(_userTransactions, _deleteTransaction),
+                  ),
+        ],
       ),
     );
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: appBar,
+            child: pageBody,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => openAddNewTxModal(context),
+                  ),
+          );
   }
 }
