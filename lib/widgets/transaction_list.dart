@@ -11,6 +11,8 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bodyHeight = (MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top);
     return Container(
       height: 550,
       child: transactions.isEmpty
@@ -18,12 +20,12 @@ class TransactionList extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'No transactions added yet!',
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 Divider(),
                 Container(
                   child: Image.asset('images/waiting.png'),
-                  height: 200,
+                  height: bodyHeight * 0.4,
                 )
               ],
             )
@@ -43,7 +45,7 @@ class TransactionList extends StatelessWidget {
                     ),
                     title: Text(
                       '${transactions[index].title}',
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     subtitle: Text(
                       DateFormat.yMMMMd().format(transactions[index].date),

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.amber,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
+              headline6: TextStyle(
                 fontFamily: 'Opensans',
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
-                title: TextStyle(
+                headline6: TextStyle(
                   fontFamily: 'Opensans',
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -50,54 +50,54 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-      id: 't1',
-      title: 'Books',
-      amount: 14.44,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Shoes',
-      amount: 11.77,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Books',
-      amount: 14.44,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't4',
-      title: 'Shoes',
-      amount: 11.77,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't5',
-      title: 'Books',
-      amount: 14.44,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't6',
-      title: 'Shoes',
-      amount: 11.77,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't7',
-      title: 'Books',
-      amount: 14.44,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't8',
-      title: 'Shoes',
-      amount: 11.77,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    )
+    // Transaction(
+    //   id: 't1',
+    //   title: 'Books',
+    //   amount: 14.44,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Shoes',
+    //   amount: 11.77,
+    //   date: DateTime.now().subtract(Duration(days: 1)),
+    // ),
+    // Transaction(
+    //   id: 't3',
+    //   title: 'Books',
+    //   amount: 14.44,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't4',
+    //   title: 'Shoes',
+    //   amount: 11.77,
+    //   date: DateTime.now().subtract(Duration(days: 1)),
+    // ),
+    // Transaction(
+    //   id: 't5',
+    //   title: 'Books',
+    //   amount: 14.44,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't6',
+    //   title: 'Shoes',
+    //   amount: 11.77,
+    //   date: DateTime.now().subtract(Duration(days: 1)),
+    // ),
+    // Transaction(
+    //   id: 't7',
+    //   title: 'Books',
+    //   amount: 14.44,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't8',
+    //   title: 'Shoes',
+    //   amount: 11.77,
+    //   date: DateTime.now().subtract(Duration(days: 1)),
+    // )
   ];
 
   List<Transaction> get _getRecentTransactions {
