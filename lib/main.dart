@@ -185,33 +185,35 @@ class _MyHomePageState extends State<MyHomePage> {
     var bodyHeight = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
-    var pageBody = SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          if (!isLandscape)
-            Container(
-              height: bodyHeight * 0.3,
-              child: Chart(_getRecentTransactions),
-            ),
-          if (!isLandscape)
-            Container(
-              height: bodyHeight * 0.7,
-              child: TransactionList(_userTransactions, _deleteTransaction),
-            ),
-          if (isLandscape)
-            showChart
-                ? Container(
-                    height: bodyHeight * 1,
-                    child: Chart(_getRecentTransactions),
-                  )
-                : Container(
-                    height: bodyHeight * 1,
-                    child:
-                        TransactionList(_userTransactions, _deleteTransaction),
-                  ),
-        ],
+    var pageBody = SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (!isLandscape)
+              Container(
+                height: bodyHeight * 0.3,
+                child: Chart(_getRecentTransactions),
+              ),
+            if (!isLandscape)
+              Container(
+                height: bodyHeight * 0.7,
+                child: TransactionList(_userTransactions, _deleteTransaction),
+              ),
+            if (isLandscape)
+              showChart
+                  ? Container(
+                      height: bodyHeight * 1,
+                      child: Chart(_getRecentTransactions),
+                    )
+                  : Container(
+                      height: bodyHeight * 1,
+                      child: TransactionList(
+                          _userTransactions, _deleteTransaction),
+                    ),
+          ],
+        ),
       ),
     );
     return Platform.isIOS
