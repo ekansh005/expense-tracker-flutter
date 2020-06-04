@@ -143,19 +143,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool showChart = false;
 
-  @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
-    final showCardSwitch = Switch.adaptive(
-      value: showChart,
-      onChanged: (val) {
-        setState(() {
-          showChart = val;
-        });
-      },
-    );
-    final PreferredSizeWidget appBar = Platform.isIOS
+  Widget _buildAppBar(Widget showCardSwitch, bool isLandscape) {
+    return Platform.isIOS
         ? CupertinoNavigationBar(
             middle: Text(widget.title),
             trailing: Row(
@@ -182,6 +171,49 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             ],
           );
+  }
+
+  List<Widget> _buildLandscapeContent(bool showChart, double bodyHeight) {
+    return [
+      showChart
+          ? Container(
+              height: bodyHeight * 1,
+              child: Chart(_getRecentTransactions),
+            )
+          : Container(
+              height: bodyHeight * 1,
+              child: TransactionList(_userTransactions, _deleteTransaction),
+            ),
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(double bodyHeight) {
+    return [
+      Container(
+        height: bodyHeight * 0.3,
+        child: Chart(_getRecentTransactions),
+      ),
+      Container(
+        height: bodyHeight * 0.7,
+        child: TransactionList(_userTransactions, _deleteTransaction),
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final showCardSwitch = Switch.adaptive(
+      value: showChart,
+      onChanged: (val) {
+        setState(() {
+          showChart = val;
+        });
+      },
+    );
+    final PreferredSizeWidget appBar =
+        _buildAppBar(showCardSwitch, isLandscape);
     var bodyHeight = (mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top);
@@ -191,27 +223,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            if (!isLandscape)
-              Container(
-                height: bodyHeight * 0.3,
-                child: Chart(_getRecentTransactions),
-              ),
-            if (!isLandscape)
-              Container(
-                height: bodyHeight * 0.7,
-                child: TransactionList(_userTransactions, _deleteTransaction),
-              ),
-            if (isLandscape)
-              showChart
-                  ? Container(
-                      height: bodyHeight * 1,
-                      child: Chart(_getRecentTransactions),
-                    )
-                  : Container(
-                      height: bodyHeight * 1,
-                      child: TransactionList(
-                          _userTransactions, _deleteTransaction),
-                    ),
+            if (!isLandscape) ..._buildPortraitContent(bodyHeight),
+            if (isLandscape) ..._buildLandscapeContent(showChart, bodyHeight)
           ],
         ),
       ),
